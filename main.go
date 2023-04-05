@@ -19,6 +19,16 @@ func (s *Page) savePage() error {
 	return os.WriteFile(filename, s.Body, 0600)
 }
 
+func loadPage (title string) (*Page, error) {
+	filename := title + ".txt"
+	body, err :=os.ReadFile(filename)
+	fmt.Println("error is: ", err)
+	if err != nil {
+		return nil, err
+	}
+	return &Page{ Title: title, Body : body}, nil
+}
+
 func main() {
 	body, _ := os.ReadFile("./static/index.html")
 	page := &Page{
@@ -30,5 +40,8 @@ func main() {
 	fmt.Println(str)
 	p1 := &Page{Title: "TestPage", Body: []byte("This is a sample Page.")}
 	p1.savePage()
+
+	p2, _ :=loadPage("TestPage")
+	fmt.Println(string(p2.Body))
 
 }
